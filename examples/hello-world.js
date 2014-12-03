@@ -15,23 +15,43 @@ s.device = device;
 s.appURL = 'http://openflint.github.io/hello-world-sample/index.html';
 s.appID = '~hello-world';
 
-s.launchApp(function (err, res, body) {
+console.log('will launch app');
+s.launchApp(function (err) {
   if (err) {
     console.error('ERROR - failed to launch app - %s', err);
     return;
   }
 
-  console.log(body);
+  console.log('app launched');
+
+  s.getState(function (err, state) {
+    if (err) {
+      console.error('ERROR - failed to get state - %s', err);
+      return;
+    }
+
+    console.log('app state %s', state);
+  });
 
   setTimeout(function () {
-    // console.log('will close');
-    // s.closeApp(function (err, res, body) {
-    //   if (err) {
-    //     console.error('ERROR - failed to close app - %s', err);
-    //     return;
-    //   }
-    //
-    //   console.log(body);
-    // });
+    console.log('will close app');
+    s.closeApp(function (err) {
+      if (err) {
+        console.error('ERROR - failed to close app - %s', err);
+        return;
+      }
+
+      console.log('app closed');
+
+      s.token = null;
+      s.getState(function (err, state) {
+        if (err) {
+          console.error('ERROR - failed to get state - %s', err);
+          return;
+        }
+
+        console.log('app state %s', state);
+      });
+    });
   }, 2500);
 });
