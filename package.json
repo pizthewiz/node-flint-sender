@@ -19,6 +19,7 @@
   "dependencies": {
     "dial": "*",
     "request": "*",
+    "xml2js": "*",
     "ws": "*"
   },
   "engines": {
