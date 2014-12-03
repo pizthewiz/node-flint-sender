@@ -1,0 +1,27 @@
+{
+  "name": "flint-sender",
+  "version": "0.0.0",
+  "description": "Flint sender module to discover Flint devices and manage the execution of receiver apps",
+  "keywords": [
+    "flint",
+    "matchstick"
+  ],
+  "homepage": "http://github.com/pizthewiz/node-flint-sender",
+  "bugs": {
+    "url": "http://github.com/pizthewiz/node-flint-sender/issues"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pizthewiz/node-flint-sender.git"
+  },
+  "dependencies": {
+    "dial": "*",
+    "request": "*",
+    "ws": "*"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}
