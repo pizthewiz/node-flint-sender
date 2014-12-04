@@ -1,11 +1,12 @@
 /* jshint node:true */
 'use strict';
 
-var Sender = require('../');
+var Sender = require('../').Sender;
 
+// synthesize a DIAL device
 var device = {
-  location: 'http://10.0.1.46:9431/ssdp/device-desc.xml',
-  applicationUrl: 'http://10.0.1.46:9431/apps',
+  location: 'http://localhost:9431/ssdp/device-desc.xml',
+  applicationUrl: 'http://localhost:9431/apps',
   name: 'MatchStick_MAC_b93d',
   model: 'MatchStick'
 };
@@ -15,6 +16,22 @@ s.device = device;
 s.appURL = 'http://openflint.github.io/hello-world-sample/index.html';
 s.appID = '~hello-world';
 
+// system control
+s.systemControl('GET_MUTED', function (err, value) {
+  console.log('muted:', value);
+});
+s.systemControl('GET_VOLUME', function (err, value) {
+  console.log('volume:', value);
+
+  console.log('will set volume');
+  s.systemControl('SET_VOLUME', 0.333, function (err) {
+    s.systemControl('GET_VOLUME', function (err, value) {
+      console.log('volume:', value);
+    });
+  });
+});
+
+// app launch, state and close
 console.log('will launch app');
 s.launchApp(function (err) {
   if (err) {
@@ -30,7 +47,7 @@ s.launchApp(function (err) {
       return;
     }
 
-    console.log('app state %s', state);
+    console.log('app state:', state);
   });
 
   setTimeout(function () {
@@ -50,8 +67,8 @@ s.launchApp(function (err) {
           return;
         }
 
-        console.log('app state %s', state);
+        console.log('app state:', state);
       });
     });
-  }, 2500);
+  }, 3000);
 });

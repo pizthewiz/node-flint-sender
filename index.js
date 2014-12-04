@@ -2,6 +2,6 @@
 'use strict';
 
 module.exports = {
-  Sender: require('./lib/Sender'),
-  DeviceScanner: require('./lib/DeviceScanner')
+  DeviceScanner: require('./lib/DeviceScanner'),
+  Sender: require('./lib/Sender')
 };
