@@ -1,4 +1,7 @@
 /* jshint node:true */
 'use strict';
 
-var Sender = module.exports = require('./lib/Sender');
+module.exports = {
+  Sender: require('./lib/Sender'),
+  DeviceScanner: require('./lib/DeviceScanner')
+};
