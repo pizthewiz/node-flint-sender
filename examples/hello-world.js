@@ -12,8 +12,6 @@ var device = {
 };
 
 var manager = new DeviceManager(device);
-manager.appURL = 'http://openflint.github.io/hello-world-sample/index.html';
-manager.appID = '~hello-world';
 
 // system control
 manager.systemControl('GET_MUTED', function (err, value) {
@@ -30,43 +28,30 @@ manager.systemControl('GET_VOLUME', function (err, value) {
   });
 });
 
-// app launch, state and close
-console.log('will launch app');
-manager.launchApp(function (err) {
-  if (err) {
-    console.error('ERROR - failed to launch app - %s', err);
-    return;
-  }
+// get app state
+manager.appID = '~hello-world';
+manager.getAppState(function (err, state) {
+  console.log('app state:', state);
 
-  console.log('app launched');
+  // launch, state and close state
+  console.log('will launch app');
+  var appURL = 'http://openflint.github.io/hello-world-sample/index.html';
+  manager.launchApp(appURL, function (err) {
+    console.log('app launched');
 
-  manager.getState(function (err, state) {
-    if (err) {
-      console.error('ERROR - failed to get state - %s', err);
-      return;
-    }
-
-    console.log('app state:', state);
-  });
-
-  setTimeout(function () {
-    console.log('will close app');
-    manager.closeApp(function (err) {
-      if (err) {
-        console.error('ERROR - failed to close app - %s', err);
-        return;
-      }
-
-      console.log('app closed');
-
-      manager.getState(function (err, state) {
-        if (err) {
-          console.error('ERROR - failed to get state - %s', err);
-          return;
-        }
-
-        console.log('app state:', state);
-      });
+    manager.getAppState(function (err, state) {
+      console.log('app state:', state);
     });
-  }, 3000);
+
+    setTimeout(function () {
+      console.log('will close app');
+      manager.closeApp(function (err) {
+        console.log('app closed');
+
+        manager.getAppState(function (err, state) {
+          console.log('app state:', state);
+        });
+      });
+    }, 3000);
+  });
 });
