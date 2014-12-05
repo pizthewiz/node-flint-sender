@@ -1,7 +1,7 @@
 /* jshint node:true */
 'use strict';
 
-var Sender = require('../').Sender;
+var DeviceManager = require('../').DeviceManager;
 
 // synthesize a device
 var device = {
@@ -11,20 +11,20 @@ var device = {
   model: 'MatchStick'
 };
 
-var s = new Sender(device);
-s.appURL = 'http://openflint.github.io/hello-world-sample/index.html';
-s.appID = '~hello-world';
+var manager = new DeviceManager(device);
+manager.appURL = 'http://openflint.github.io/hello-world-sample/index.html';
+manager.appID = '~hello-world';
 
 // system control
-s.systemControl('GET_MUTED', function (err, value) {
+manager.systemControl('GET_MUTED', function (err, value) {
   console.log('muted:', value);
 });
-s.systemControl('GET_VOLUME', function (err, value) {
+manager.systemControl('GET_VOLUME', function (err, value) {
   console.log('volume:', value);
 
   console.log('will set volume');
-  s.systemControl('SET_VOLUME', 0.333, function (err) {
-    s.systemControl('GET_VOLUME', function (err, value) {
+  manager.systemControl('SET_VOLUME', 0.333, function (err) {
+    manager.systemControl('GET_VOLUME', function (err, value) {
       console.log('volume:', value);
     });
   });
@@ -32,7 +32,7 @@ s.systemControl('GET_VOLUME', function (err, value) {
 
 // app launch, state and close
 console.log('will launch app');
-s.launchApp(function (err) {
+manager.launchApp(function (err) {
   if (err) {
     console.error('ERROR - failed to launch app - %s', err);
     return;
@@ -40,7 +40,7 @@ s.launchApp(function (err) {
 
   console.log('app launched');
 
-  s.getState(function (err, state) {
+  manager.getState(function (err, state) {
     if (err) {
       console.error('ERROR - failed to get state - %s', err);
       return;
@@ -51,7 +51,7 @@ s.launchApp(function (err) {
 
   setTimeout(function () {
     console.log('will close app');
-    s.closeApp(function (err) {
+    manager.closeApp(function (err) {
       if (err) {
         console.error('ERROR - failed to close app - %s', err);
         return;
@@ -59,7 +59,7 @@ s.launchApp(function (err) {
 
       console.log('app closed');
 
-      s.getState(function (err, state) {
+      manager.getState(function (err, state) {
         if (err) {
           console.error('ERROR - failed to get state - %s', err);
           return;

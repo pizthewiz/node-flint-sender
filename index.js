@@ -3,5 +3,5 @@
 
 module.exports = {
   DeviceScanner: require('./lib/DeviceScanner'),
-  Sender: require('./lib/Sender')
+  DeviceManager: require('./lib/DeviceManager')
 };
