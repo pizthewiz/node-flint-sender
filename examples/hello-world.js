@@ -1,57 +1,65 @@
 /* jshint node:true */
 'use strict';
 
+var DeviceScanner = require('../').DeviceScanner;
 var DeviceManager = require('../').DeviceManager;
 
-// synthesize a device
-var device = {
-  applicationUrl: 'http://localhost:9431/apps',
-  location: 'http://localhost:9431/ssdp/device-desc.xml',
-  name: 'MatchStick_MAC_b93d',
-  model: 'MatchStick'
-};
+var appID = '~hello-world';
+var appURL = 'http://openflint.github.io/hello-world-sample/index.html';
 
-var manager = new DeviceManager(device);
+var manager = null;
 
-// system control
-manager.systemControl('GET_MUTED', function (err, value) {
-  console.log('muted:', value);
+// find a device and then send it commands
+var scanner = new DeviceScanner();
+scanner.on('device', function (device) {
+  console.log('found device:', device.name);
+  scanner.stop();
+
+  manager = new DeviceManager(device);
+  sendCommands();
 });
-manager.systemControl('GET_VOLUME', function (err, value) {
-  console.log('volume:', value);
+scanner.start();
 
-  console.log('will set volume');
-  manager.systemControl('SET_VOLUME', 0.333, function (err) {
-    manager.systemControl('GET_VOLUME', function (err, value) {
-      console.log('volume:', value);
-    });
+function sendCommands() {
+  // system control
+  manager.systemControl('GET_MUTED', function (err, value) {
+    console.log('muted:', value);
   });
-});
+  manager.systemControl('GET_VOLUME', function (err, value) {
+    console.log('volume:', value);
 
-// get app state
-manager.appID = '~hello-world';
-manager.getAppState(function (err, state) {
-  console.log('app state:', state);
-
-  // launch, state and close state
-  console.log('will launch app');
-  var appURL = 'http://openflint.github.io/hello-world-sample/index.html';
-  manager.launchApp(appURL, function (err) {
-    console.log('app launched');
-
-    manager.getAppState(function (err, state) {
-      console.log('app state:', state);
-    });
-
-    setTimeout(function () {
-      console.log('will close app');
-      manager.closeApp(function (err) {
-        console.log('app closed');
-
-        manager.getAppState(function (err, state) {
-          console.log('app state:', state);
-        });
+    console.log('will set volume');
+    manager.systemControl('SET_VOLUME', 0.333, function (err) {
+      manager.systemControl('GET_VOLUME', function (err, value) {
+        console.log('volume:', value);
       });
-    }, 3000);
+    });
   });
-});
+
+  // get app state
+  manager.appID = appID;
+  manager.getAppState(function (err, state) {
+    console.log('app state:', state);
+
+    // launch, state and close state
+    console.log('will launch app');
+    manager.launchApp(appURL, function (err) {
+      console.log('app launched');
+
+      manager.getAppState(function (err, state) {
+        console.log('app state:', state);
+      });
+
+      setTimeout(function () {
+        console.log('will close app');
+        manager.closeApp(function (err) {
+          console.log('app closed');
+
+          manager.getAppState(function (err, state) {
+            console.log('app state:', state);
+          });
+        });
+      }, 3000);
+    });
+  });
+}
