@@ -3,16 +3,15 @@
 
 var Sender = require('../').Sender;
 
-// synthesize a DIAL device
+// synthesize a device
 var device = {
-  location: 'http://localhost:9431/ssdp/device-desc.xml',
   applicationUrl: 'http://localhost:9431/apps',
+  location: 'http://localhost:9431/ssdp/device-desc.xml',
   name: 'MatchStick_MAC_b93d',
   model: 'MatchStick'
 };
 
-var s = new Sender();
-s.device = device;
+var s = new Sender(device);
 s.appURL = 'http://openflint.github.io/hello-world-sample/index.html';
 s.appID = '~hello-world';
 
@@ -60,7 +59,6 @@ s.launchApp(function (err) {
 
       console.log('app closed');
 
-      s.token = null;
       s.getState(function (err, state) {
         if (err) {
           console.error('ERROR - failed to get state - %s', err);
