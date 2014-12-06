@@ -51,9 +51,9 @@ function sendCommands() {
       });
 
       setTimeout(function () {
-        console.log('will close app');
-        manager.closeApp(function (err) {
-          console.log('app closed');
+        console.log('will quit app');
+        manager.quitApp(function (err) {
+          console.log('app quit');
 
           manager.getAppState(function (err, state) {
             console.log('app state:', state);
