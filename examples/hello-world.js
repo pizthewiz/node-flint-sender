@@ -22,15 +22,15 @@ scanner.start();
 
 function sendCommands() {
   // system control
-  manager.systemControl('GET_MUTED', function (err, value) {
+  manager.getMuted(function (err, value) {
     console.log('muted:', value);
   });
-  manager.systemControl('GET_VOLUME', function (err, value) {
+  manager.getVolume(function (err, value) {
     console.log('volume:', value);
 
     console.log('will set volume');
-    manager.systemControl('SET_VOLUME', 0.333, function (err) {
-      manager.systemControl('GET_VOLUME', function (err, value) {
+    manager.setVolume(0.333, function (err) {
+      manager.getVolume(function (err, value) {
         console.log('volume:', value);
       });
     });
