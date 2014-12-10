@@ -3,5 +3,6 @@
 
 module.exports = {
   DeviceScanner: require('./lib/DeviceScanner'),
-  DeviceManager: require('./lib/DeviceManager')
+  DeviceManager: require('./lib/DeviceManager'),
+  MessageChannel: require('./lib/MessageChannel')
 };
