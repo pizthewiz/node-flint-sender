@@ -6,9 +6,9 @@
     "flint",
     "matchstick"
   ],
-  "homepage": "http://github.com/pizthewiz/node-flint-sender",
+  "homepage": "https://github.com/pizthewiz/node-flint-sender",
   "bugs": {
-    "url": "http://github.com/pizthewiz/node-flint-sender/issues"
+    "url": "https://github.com/pizthewiz/node-flint-sender/issues"
   },
   "license": "MIT",
   "main": "index.js",
@@ -17,10 +17,10 @@
     "url": "https://github.com/pizthewiz/node-flint-sender.git"
   },
   "dependencies": {
-    "dial": "*",
-    "request": "*",
-    "xml2js": "*",
-    "ws": "*"
+    "dial": "0.0.4",
+    "request": "^2.51.0",
+    "xml2js": "^0.4.4",
+    "ws": "^0.6.3"
   },
   "engines": {
     "node": "0.10.x"
