@@ -4,7 +4,6 @@
 // based on the sender side of https://github.com/openflint/audio-visualizer-sample
 
 var DeviceManager = require('../').DeviceManager;
-var util = require('util');
 
 var appID = '~audio-visualizer';
 var appURL = 'http://openflint.github.io/audio-visualizer-sample/receiver_app/index.html';
@@ -42,19 +41,21 @@ manager.on('channel', function (channel) {
     });
     channel.send(data, function (err) {
       if (err) {
-        console.error('ERROR - channel send failed:', util.inspect(err));
+        console.error('ERROR - channel send failed:', err);
         return;
       }
+
+      // success
     });
   });
   channel.on('close', function () {
     console.log('channel closed');
   });
   channel.on('error', function (err) {
-    console.error('ERROR - channel error:', util.inspect(err));
+    console.error('ERROR - MessageChannel failure:', err);
   });
   channel.on('message', function (data) {
-    console.log('received message:', util.inspect(data));
+    console.log('received message:', data);
   });
 });
 
