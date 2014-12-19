@@ -35,9 +35,9 @@ manager.on('channel', function (channel) {
     console.log('channel opened');
 
     var data = JSON.stringify({
-      'type': 'PLAY',
-      'effect': 'wave',
-      'url': 'http://openflint.github.io/audio-visualizer-sample/receiver_app/audio/EMDCR.ogg'
+      type: 'PLAY',
+      effect: 'wave',
+      url: 'http://openflint.github.io/audio-visualizer-sample/receiver_app/audio/EMDCR.ogg'
     });
     channel.send(data, function (err) {
       if (err) {
