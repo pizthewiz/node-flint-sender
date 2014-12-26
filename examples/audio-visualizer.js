@@ -49,7 +49,8 @@ manager.on('channel', function (channel) {
     });
   });
   channel.on('close', function () {
-    console.log('channel closed');
+    console.log('channel closed, will quit app');
+    manager.quitApp();
   });
   channel.on('error', function (err) {
     console.error('ERROR - MessageChannel failure:', err);
