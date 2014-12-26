@@ -8,8 +8,6 @@ var DeviceManager = require('../').DeviceManager;
 var appID = '~flintplayer';
 var appURL = 'http://openflint.github.io/flint-player/player.html';
 
-var DeviceManager = require('../').DeviceManager;
-
 var device = {
   applicationUrl: 'http://localhost:9431/apps',
   name: 'MatchStick_MAC_a474',
