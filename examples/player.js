@@ -22,6 +22,7 @@ manager.on('error', function (err) {
 });
 manager.on('channel', function (channel) {
   channel.on('open', function () {
+    // NB - weird double stringify for the default player message format
     var data = JSON.stringify({
       namespace: 'urn:flint:org.openflint.fling.media',
       payload: JSON.stringify({
@@ -53,6 +54,9 @@ manager.on('channel', function (channel) {
     console.error('ERROR - MessageChannel failure:', err);
   });
   channel.on('message', function (data) {
+    // NB - weird double parse given the default player message format
+    data = JSON.parse(data);
+    data.payload = JSON.parse(data.payload);
     console.log('received message:', data);
   });
 });
