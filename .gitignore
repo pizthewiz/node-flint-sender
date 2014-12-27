@@ -5,4 +5,5 @@
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git-
 node_modules
 
-examples/player-local/public/videos/*.mp4|m4v|webm|mkv
+examples/player-local/public/videos/
+!examples/player-local/public/videos/README.md
