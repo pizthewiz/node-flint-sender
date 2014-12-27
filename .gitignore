@@ -5,5 +5,5 @@
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git-
 node_modules
 
-examples/player-local/public/videos/
-!examples/player-local/public/videos/README.md
+examples/player-local/public/media/
+!examples/player-local/public/media/README.md

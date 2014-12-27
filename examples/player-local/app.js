@@ -10,6 +10,7 @@ var errorhandler = require('errorhandler');
 var ip = require('ip');
 
 var DeviceManager = require('../../').DeviceManager;
+var RemoteMediaPlayer = require('../../').RemoteMediaPlayer;
 
 var path = require('path');
 var fs = require('fs');
@@ -43,51 +44,22 @@ var device = {
 var manager = manager = new DeviceManager(device);
 manager.appID = appID;
 
-// see: http://www.matchstick.tv/developers/documents/supported-media.html
-var RE = new RegExp(/mp4|m4v|webm|mkv$/i);
-var TYPES = {
-  mp4: 'video/mp4',
-  m4v: 'video/x-m4v',
-  webm: 'video/webm',
-  mkv: 'video/x-matroska'
-};
-function contentTypeForFilepath(filepath) {
-  var fileExtension = filepath.toLowerCase().match(RE)[0];
-  return TYPES[fileExtension];
-}
-
-function sendLoad(channel) {
-  // pick a video at random
-  var files = fs.readdirSync(path.join(__dirname, 'public/videos')).filter(function (e) {
-    return e.match(RE) !== null;
+function sendLoad(player) {
+  // pick a file at random
+  var files = fs.readdirSync(path.join(__dirname, 'public/media')).filter(function (e) {
+    return player.likelySupportsDisplay(e);
   });
   var filepath = files[Math.floor(Math.random() * files.length)];
   if (filepath === undefined) {
-    console.error('ERROR - no video files in:', path.join(__dirname, 'public/videos'));
+    console.error('ERROR - no media files in:', path.join(__dirname, 'public/media'));
     manager.quitApp();
     return;
   }
 
-  var fileURL = util.format('http://%s:%d/videos/%s', ip.address(), app.get('port'), filepath);
-  var fileContentType = contentTypeForFilepath(filepath);
-  var data = JSON.stringify({
-    namespace: 'urn:flint:org.openflint.fling.media',
-    payload: JSON.stringify({
-      type: 'LOAD',
-      requestId: 'requestId-2',
-      media: {
-        contentId: fileURL,
-        contentType: fileContentType,
-        metadata: {
-          title: '',
-          subtitle: ''
-        }
-      }
-    })
-  });
-  channel.send(data, function (err) {
+  var fileURL = util.format('http://%s:%d/media/%s', ip.address(), app.get('port'), filepath);
+  player.load(fileURL, function (err) {
     if (err) {
-      console.error('ERROR - failed to load media:', err);
+      console.error('ERROR - failed to send load:', err);
       return;
     }
   });
@@ -102,8 +74,20 @@ manager.on('quit', function () {
   process.exit(0);
 });
 manager.on('channel', function (channel) {
+  var player = new RemoteMediaPlayer(channel);
+  player.on('message', function (data) {
+    console.log('received player message:', util.inspect(data, {depth: 5}));
+
+    var status = data.payload.status[0];
+    if (status.playerState === 'IDLE' && status.idleReason === 'FINISHED') {
+      setTimeout(function () {
+        sendLoad(player);
+      }, 1500);
+    }
+  });
+
   channel.on('open', function () {
-    sendLoad(channel);
+    sendLoad(player);
   });
   channel.on('close', function () {
     console.log('channel closed, will quit app');
@@ -111,20 +95,6 @@ manager.on('channel', function (channel) {
   });
   channel.on('error', function (err) {
     console.error('ERROR - MessageChannel failure:', err);
-  });
-  channel.on('message', function (data) {
-    data = JSON.parse(data);
-    data.payload = JSON.parse(data.payload);
-
-    // play another video when the current one finishes
-    if (data.payload && data.payload.type === 'MEDIA_STATUS') {
-      var status = data.payload.status[0];
-      if (status.playerState === 'IDLE' && status.idleReason === 'FINISHED') {
-        setTimeout(function () {
-          sendLoad(channel);
-        }, 1500);
-      }
-    }
   });
 });
 

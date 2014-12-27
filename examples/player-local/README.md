@@ -1,4 +1,4 @@
-📼 MP4 and WebM files in _public/videos_ will be played at random.
+📼 💽  Media files in _public/media_ will be played at random.
 
 Install dependencies:
 ```sh
