@@ -1,0 +1,19 @@
+{
+  "name": "player-local",
+  "version" : "0.0.0",
+  "description" : "Player sender serving local video files",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "4.x",
+    "compression": "*",
+    "body-parser": "*",
+    "morgan": "*",
+    "response-time": "*",
+    "errorhandler": "*",
+    "ip": "*"
+  },
+  "private": true
+}
