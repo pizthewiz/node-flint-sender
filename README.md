@@ -31,7 +31,6 @@ manager.launchApp(appURL);
 ```
 
 Messaging:
-
 ```javascript
 manager.on('channel', function (channel) {
   console.log('channel created');
@@ -47,6 +46,22 @@ manager.on('channel', function (channel) {
 });
 
 manager.launchApp(appURL, {messageChannel: true});
+```
+
+The platform uses [`flint-player`](https://github.com/openflint/flint-player) as the default media player and can be interacted with via `RemoteMediaPlayer`:
+```javascript
+manager.on('channel', function (channel) {
+  var player = new RemoteMediaPlayer(channel);
+  player.on('message', function (data) {
+    console.log('received player message:', data);
+  });
+
+  channel.on('open', function () {
+    player.load('http://fling.matchstick.tv/droidream/samples/BigBuckBunny.mp4', function (err) {
+      // 👍
+    });
+  });
+});
 ```
 
 System Control:
