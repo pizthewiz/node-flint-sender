@@ -17,4 +17,6 @@ setTimeout(function () {
 
   var deviceCount = scanner.devices.length;
   console.log('scanner found %s device%s', deviceCount, deviceCount !== 1 ? 's' : '');
+
+  process.exit(0);
 }, 60 * 1000);
