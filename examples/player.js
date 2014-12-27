@@ -16,7 +16,7 @@ var device = {
   name: 'MatchStick_MAC_a474',
   model: 'MatchStick'
 };
-var manager = manager = new DeviceManager(device);
+var manager = new DeviceManager(device);
 manager.appID = appID;
 
 manager.on('error', function (err) {
