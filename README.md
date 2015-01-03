@@ -2,7 +2,7 @@
 
 Flint is a service that builds on the [DIAL](http://www.dial-multiscreen.org/) (**DI**scovery **A**nd **L**aunch) protocol, using the DIAL Service Discovery component for discovery, an extended version of the DIAL REST Service component for receiver app execution control and a WebSocket Service channel for communication with receiver apps.
 
-The first piece of hardware to use Flint is the [Matchstick](http://matchstick.tv), an open hardware/software HDMI streaming stick that runs [Firefox OS](https://www.mozilla.org/en-US/firefox/os/). A pure-software Flint service can be used in lieu of hardware, see the [flingd-coffee](https://github.com/openflint/flingd-coffee) project (NB - it is unclear if this is the actual daemon that runs on the Matchstick hardware).
+The first piece of hardware to use Flint is the [Matchstick](http://matchstick.tv), an open hardware/software HDMI streaming stick that runs [Firefox OS](https://www.mozilla.org/en-US/firefox/os/). A pure-software Flint service can be used in lieu of hardware, see the [flingd-coffee](https://github.com/openflint/flingd-coffee) project (it is unclear if this is the actual daemon that runs on the Matchstick hardware).
 
 ### EXAMPLES
 
@@ -30,7 +30,7 @@ manager.on('launch', function () {
 manager.launchApp(appURL);
 ```
 
-Messaging:
+Messaging via the `MessageChannel` object:
 ```javascript
 manager.on('channel', function (channel) {
   console.log('channel created');
@@ -48,7 +48,7 @@ manager.on('channel', function (channel) {
 manager.launchApp(appURL, {messageChannel: true});
 ```
 
-The platform uses [`flint-player`](https://github.com/openflint/flint-player) as the default media player and can be interacted with via `RemoteMediaPlayer`:
+The platform has a default media player available in [`flint-player`](https://github.com/openflint/flint-player) and can be interacted through the `RemoteMediaPlayer` object which piggybacks the `MessageChannel`:
 ```javascript
 manager.on('channel', function (channel) {
   var player = new RemoteMediaPlayer(channel);
@@ -57,7 +57,8 @@ manager.on('channel', function (channel) {
   });
 
   channel.on('open', function () {
-    player.load('http://fling.matchstick.tv/droidream/samples/BigBuckBunny.mp4', function (err) {
+    var videoURL = 'http://fling.matchstick.tv/droidream/samples/BigBuckBunny.mp4';
+    player.load(videoURL, function (err) {
       // 👍
     });
   });
