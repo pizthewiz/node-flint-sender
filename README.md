@@ -1,12 +1,12 @@
 # node-flint-sender
 
-Flint is a service that builds on the [DIAL](http://www.dial-multiscreen.org/) (**DI**scovery **A**nd **L**aunch) protocol, using the DIAL Service Discovery component for discovery, an extended version of the DIAL REST Service component for receiver app execution control and a WebSocket Service channel for communication with receiver apps.
+Flint is a service that builds on the [DIAL](http://www.dial-multiscreen.org/) (**DI**scovery **A**nd **L**aunch) protocol, using the DIAL Service Discovery component, an extended version of the DIAL REST Service component for receiver app execution control and a WebSocket Service channel for communication from the sender app to receiver app.
 
-The first piece of hardware to use Flint is the [Matchstick](http://matchstick.tv), an open hardware/software HDMI streaming stick that runs [Firefox OS](https://www.mozilla.org/en-US/firefox/os/). A pure-software Flint service can be used in lieu of hardware, see the [flingd-coffee](https://github.com/openflint/flingd-coffee) project (it is unclear if this is the actual daemon that runs on the Matchstick hardware).
+The first piece of hardware to support Flint is the [Matchstick](http://matchstick.tv), an open hardware/software HDMI stick that runs [Firefox OS](https://www.mozilla.org/en-US/firefox/os/). In lieu of hardware to test against, the daemon can be run locally, please see the   [flingd-coffee](https://github.com/openflint/flingd-coffee) project.
 
 ### EXAMPLES
 
-Device Detection:
+Device detection:
 ```javascript
 var scanner = new DeviceScanner();
 scanner.on('device', function (device) {
@@ -15,7 +15,7 @@ scanner.on('device', function (device) {
 scanner.start();
 ```
 
-Application Launch:
+Application launch:
 ```javascript
 var appID = '~hello-world';
 var appURL = 'http://openflint.github.io/hello-world-sample/index.html';
@@ -30,7 +30,7 @@ manager.on('launch', function () {
 manager.launchApp(appURL);
 ```
 
-Messaging via the `MessageChannel` object:
+Messaging via `MessageChannel` object:
 ```javascript
 manager.on('channel', function (channel) {
   console.log('channel created');
@@ -48,7 +48,7 @@ manager.on('channel', function (channel) {
 manager.launchApp(appURL, {messageChannel: true});
 ```
 
-The platform has a default media player available in [`flint-player`](https://github.com/openflint/flint-player) and can be interacted through the `RemoteMediaPlayer` object which piggybacks the `MessageChannel`:
+The [OpenFlint](http://www.openflint.org/) team has made a default media player available in [`flint-player`](https://github.com/openflint/flint-player) and  integration is provided through the `RemoteMediaPlayer` object which piggybacks the `MessageChannel`:
 ```javascript
 manager.on('channel', function (channel) {
   var player = new RemoteMediaPlayer(channel);
@@ -65,7 +65,7 @@ manager.on('channel', function (channel) {
 });
 ```
 
-System Control:
+System control:
 ```javascript
 manager.on('volume', function (value) {
   console.log('volume:', value);
